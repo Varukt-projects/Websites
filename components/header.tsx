@@ -13,7 +13,7 @@ export default function Header() {
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity">
           <Image src="/logo.png" alt="Travel your Journey" width={32} height={32} className="h-8 w-auto" />
-          <span className="text-xl font-serif font-bold text-primary hidden sm:inline">Travel your Journey</span>
+          <span className="text-xl font-serif font-bold text-primary  sm:inline">Travel your Journey</span>
         </Link>
 
         {/* Desktop Navigation */}
