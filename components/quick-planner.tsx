@@ -1,8 +1,7 @@
 "use client"
 
 import type React from "react"
-
-import { useState } from "react"
+import { useState, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 
@@ -12,13 +11,22 @@ export default function QuickPlanner() {
     destination: "",
     travelers: "",
     duration: "",
-    dates: "",
+    startDate: "",
+    endDate: "",
     name: "",
     email: "",
     phone: "",
   })
   const [submitted, setSubmitted] = useState(false)
   const [whatsappLink, setWhatsappLink] = useState("")
+  const [showCalendar, setShowCalendar] = useState(false)
+  const calendarRef = useRef<HTMLDivElement>(null)
+
+  const [currentMonth, setCurrentMonth] = useState(new Date())
+  const [selectedDates, setSelectedDates] = useState<{
+    start: Date | null
+    end: Date | null
+  }>({ start: null, end: null })
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
     setFormData({
@@ -27,9 +35,41 @@ export default function QuickPlanner() {
     })
   }
 
+  const getDaysInMonth = (date: Date) => new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
+
+  const getFirstDayOfMonth = (date: Date) => new Date(date.getFullYear(), date.getMonth(), 1).getDay()
+
+  const handleDateClick = (day: number) => {
+    const selectedDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day)
+
+    if (!selectedDates.start) {
+      setSelectedDates({ start: selectedDate, end: null })
+    } else if (!selectedDates.end) {
+      if (selectedDate < selectedDates.start) {
+        setSelectedDates({ start: selectedDate, end: selectedDates.start })
+      } else {
+        setSelectedDates({ ...selectedDates, end: selectedDate })
+      }
+      // Auto close calendar after selecting end date
+      setTimeout(() => setShowCalendar(false), 300)
+    } else {
+      setSelectedDates({ start: selectedDate, end: null })
+    }
+  }
+
+  const formatDateRange = () => {
+    if (!selectedDates.start) return ""
+    if (!selectedDates.end) {
+      return selectedDates.start.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
+    }
+    return `${selectedDates.start.toLocaleDateString("en-US", { month: "short", day: "numeric" })} - ${selectedDates.end.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}`
+  }
+
   const handleStep1Submit = (e: React.FormEvent) => {
     e.preventDefault()
-    if (formData.destination && formData.travelers && formData.duration && formData.dates) {
+    const dateRange = formatDateRange()
+    if (formData.destination && formData.travelers && formData.duration && dateRange) {
+      setFormData({ ...formData, startDate: formatDateRange() })
       setStep(2)
     }
   }
@@ -41,7 +81,10 @@ export default function QuickPlanner() {
         await fetch("/api/contact", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
+          body: JSON.stringify({
+            ...formData,
+            dates: formatDateRange(),
+          }),
         })
       } catch (error) {
         console.error("Error submitting form:", error)
@@ -55,7 +98,8 @@ export default function QuickPlanner() {
           gujarat: "Gujarat",
         }[formData.destination] || formData.destination
 
-      const prefilledText = `Hi, I'd like to plan a trip to ${destinationName} for ${formData.dates}. I'm traveling with ${formData.travelers} person(s) for ${formData.duration} days. My contact: ${formData.name} - ${formData.email}`
+      const dateRange = formatDateRange()
+      const prefilledText = `Hi, I'd like to plan a trip to ${destinationName} for ${dateRange}. I'm traveling with ${formData.travelers} person(s) for ${formData.duration} days. My contact: ${formData.name} - ${formData.email}`
 
       const encodedText = encodeURIComponent(prefilledText)
       const link = `https://wa.me/917434829124?text=${encodedText}`
@@ -93,7 +137,7 @@ export default function QuickPlanner() {
                       gujarat: "Gujarat",
                     }[formData.destination]
                   }{" "}
-                  • {formData.dates} • {formData.duration} days • {formData.travelers} traveler(s)
+                  • {formatDateRange()} • {formData.duration} days • {formData.travelers} traveler(s)
                 </p>
               </div>
 
@@ -113,11 +157,13 @@ export default function QuickPlanner() {
                 onClick={() => {
                   setStep(1)
                   setSubmitted(false)
+                  setSelectedDates({ start: null, end: null })
                   setFormData({
                     destination: "",
                     travelers: "",
                     duration: "",
-                    dates: "",
+                    startDate: "",
+                    endDate: "",
                     name: "",
                     email: "",
                     phone: "",
@@ -189,15 +235,93 @@ export default function QuickPlanner() {
 
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-2">Travel Dates</label>
-                  <input
-                    type="text"
-                    name="dates"
-                    value={formData.dates}
-                    onChange={handleChange}
-                    placeholder="e.g., Dec 15-22, 2024"
-                    required
-                    className="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-                  />
+                  <div className="relative" ref={calendarRef}>
+                    <div
+                      onClick={() => setShowCalendar(!showCalendar)}
+                      className="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer hover:bg-accent/5"
+                    >
+                      {formatDateRange() || "Select dates..."}
+                    </div>
+
+                    {showCalendar && (
+                      <div className="absolute z-50 top-full left-0 mt-2 bg-background border border-border rounded-lg p-4 shadow-lg w-80">
+                        <div className="flex justify-between items-center mb-4">
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))
+                            }
+                            className="text-primary hover:text-primary/80"
+                          >
+                            ←
+                          </button>
+                          <span className="font-semibold text-foreground">
+                            {currentMonth.toLocaleDateString("en-US", { month: "long", year: "numeric" })}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1))
+                            }
+                            className="text-primary hover:text-primary/80"
+                          >
+                            →
+                          </button>
+                        </div>
+
+                        <div className="grid grid-cols-7 gap-2 mb-4">
+                          {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
+                            <div key={day} className="text-center text-xs font-semibold text-muted-foreground">
+                              {day}
+                            </div>
+                          ))}
+
+                          {Array.from({ length: getFirstDayOfMonth(currentMonth) }).map((_, i) => (
+                            <div key={`empty-${i}`}></div>
+                          ))}
+
+                          {Array.from({ length: getDaysInMonth(currentMonth) }).map((_, i) => {
+                            const day = i + 1
+                            const date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day)
+                            const isStart =
+                              selectedDates.start && date.toDateString() === selectedDates.start.toDateString()
+                            const isEnd = selectedDates.end && date.toDateString() === selectedDates.end.toDateString()
+                            const isInRange =
+                              selectedDates.start &&
+                              selectedDates.end &&
+                              date > selectedDates.start &&
+                              date < selectedDates.end
+
+                            return (
+                              <button
+                                key={day}
+                                type="button"
+                                onClick={() => handleDateClick(day)}
+                                className={`text-sm py-1 rounded ${
+                                  isStart || isEnd
+                                    ? "bg-primary text-primary-foreground font-semibold"
+                                    : isInRange
+                                      ? "bg-primary/20 text-foreground"
+                                      : "text-foreground hover:bg-accent/10"
+                                }`}
+                              >
+                                {day}
+                              </button>
+                            )
+                          })}
+                        </div>
+
+                        {selectedDates.start && selectedDates.end && (
+                          <div className="text-sm text-center text-muted-foreground border-t border-border pt-2 mt-2">
+                            {Math.ceil(
+                              (selectedDates.end.getTime() - selectedDates.start.getTime()) / (1000 * 60 * 60 * 24),
+                            )}{" "}
+                            nights
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 <div>

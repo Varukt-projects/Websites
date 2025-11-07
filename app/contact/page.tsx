@@ -28,7 +28,8 @@ export default function ContactPage() {
                 <PhoneIcon className="text-accent mt-1 flex-shrink-0" size={24} />
                 <div>
                   <h3 className="font-semibold text-foreground mb-1">Phone</h3>
-                  <p className="text-sm text-muted-foreground">+91 (0) 1234 567890</p>
+                  <p className="text-sm text-muted-foreground">+91 7434829124</p>
+                  <p className="text-sm text-muted-foreground">+91 8530124947</p>
                   <p className="text-xs text-muted-foreground mt-2">Mon-Fri, 9 AM - 6 PM IST</p>
                 </div>
               </div>
@@ -39,7 +40,7 @@ export default function ContactPage() {
                 <MailIcon className="text-accent mt-1 flex-shrink-0" size={24} />
                 <div>
                   <h3 className="font-semibold text-foreground mb-1">Email</h3>
-                  <p className="text-sm text-muted-foreground">hello@travelyourjourney.com</p>
+                  <p className="text-sm text-muted-foreground">info.travelyourjourney@gmail.com</p>
                   <p className="text-xs text-muted-foreground mt-2">Response within 24 hours</p>
                 </div>
               </div>
@@ -61,7 +62,7 @@ export default function ContactPage() {
                 <MessageCircleIcon className="text-accent mt-1 flex-shrink-0" size={24} />
                 <div>
                   <h3 className="font-semibold text-foreground mb-1">WhatsApp</h3>
-                  <p className="text-sm text-muted-foreground">+91 98765 43210</p>
+                  <p className="text-sm text-muted-foreground">+91 7434829124</p>
                   <p className="text-xs text-muted-foreground mt-2">Instant messaging available</p>
                 </div>
               </div>

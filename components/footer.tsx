@@ -98,11 +98,14 @@ export default function Footer() {
             <ul className="space-y-3">
               <li className="flex items-center gap-2">
                 <PhoneIcon size={18} />
-                <span className="text-primary-foreground/80">+91 (0) 1234 567890</span>
+                <div className="flex flex-col gap-1">
+                  <span className="text-primary-foreground/80 text-sm">+91 7434829124</span>
+                  <span className="text-primary-foreground/80 text-sm">+91 8530124947</span>
+                </div>
               </li>
               <li className="flex items-center gap-2">
                 <MailIcon size={18} />
-                <span className="text-primary-foreground/80">hello@travelyourjourney.com</span>
+                <span className="text-primary-foreground/80">info.travelyourjourney@gmail.com</span>
               </li>
               <li className="flex items-start gap-2">
                 <MapPinIcon size={18} className="mt-1" />
