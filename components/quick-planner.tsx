@@ -95,7 +95,7 @@ export default function QuickPlanner() {
           himachal: "Himachal Pradesh",
           uttarakhand: "Uttarakhand",
           rajasthan: "Rajasthan",
-          gujarat: "Gujarat",
+          goa: "Goa",
         }[formData.destination] || formData.destination
 
       const dateRange = formatDateRange()
@@ -134,7 +134,7 @@ export default function QuickPlanner() {
                       himachal: "Himachal Pradesh",
                       uttarakhand: "Uttarakhand",
                       rajasthan: "Rajasthan",
-                      gujarat: "Gujarat",
+                      goa: "Goa",
                     }[formData.destination]
                   }{" "}
                   • {formatDateRange()} • {formData.duration} days • {formData.travelers} traveler(s)
@@ -229,7 +229,7 @@ export default function QuickPlanner() {
                     <option value="himachal">Himachal Pradesh</option>
                     <option value="uttarakhand">Uttarakhand</option>
                     <option value="rajasthan">Rajasthan</option>
-                    <option value="gujarat">Gujarat</option>
+                    <option value="goa">Goa</option>
                   </select>
                 </div>
 
