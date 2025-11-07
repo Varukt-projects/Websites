@@ -59,7 +59,7 @@ export default function Footer() {
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="/destinations/himachal"
+                  href="/destinations/himachal-pradesh"
                   className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
                 >
                   Himachal Pradesh
@@ -83,10 +83,10 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/destinations/gujarat"
+                  href="/destinations/goa"
                   className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
                 >
-                  Gujarat
+                  Goa
                 </Link>
               </li>
             </ul>

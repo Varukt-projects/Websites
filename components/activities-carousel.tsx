@@ -38,12 +38,12 @@ const slides: CarouselSlide[] = [
     description: "Explore majestic forts and vibrant desert landscapes",
   },
   {
-    id: "gujarat",
-    state: "Gujarat",
-    title: "Wildlife & Culture",
-    activities: ["Wildlife Safari", "Textile Tours", "Beach Activities", "Cultural Heritage"],
-    image: "/gujarat-wildlife-lion-landscape.jpg",
-    description: "Discover diverse wildlife and rich cultural heritage",
+    id: "goa",
+    state: "Goa",
+    title: "Beach Paradise",
+    activities: ["Beach Relaxation", "Water Sports", "Backwater Cruises", "Cultural Heritage"],
+    image: "/goa-beach-coconut-trees-landscape.jpg",
+    description: "Relax on pristine beaches and explore tropical landscapes",
   },
 ]
 

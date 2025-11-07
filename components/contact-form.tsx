@@ -5,12 +5,14 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { MessageCircleIcon, CheckCircleIcon } from "@/components/icons"
+import { useSearchParams } from "next/navigation"
 
 interface FormData {
   name: string
   email: string
   phone: string
   destination: string
+  package: string
   travelStyle: string[]
   interests: string[]
   tripDuration: string
@@ -20,11 +22,15 @@ interface FormData {
 }
 
 export default function ContactForm() {
+  const searchParams = useSearchParams()
+  const packageParam = searchParams.get("package")
+
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
     phone: "",
     destination: "",
+    package: packageParam || "",
     travelStyle: [],
     interests: [],
     tripDuration: "",
@@ -83,6 +89,7 @@ export default function ContactForm() {
           email: "",
           phone: "",
           destination: "",
+          package: "",
           travelStyle: [],
           interests: [],
           tripDuration: "",
@@ -189,6 +196,13 @@ export default function ContactForm() {
           <div>
             <h3 className="text-lg font-semibold text-foreground mb-4">Travel Preferences</h3>
 
+            {formData.package && (
+              <div className="mb-6 p-4 bg-accent/10 border border-accent/20 rounded-lg">
+                <p className="text-sm text-muted-foreground">You're interested in:</p>
+                <p className="text-lg font-semibold text-foreground">{formData.package}</p>
+              </div>
+            )}
+
             <div className="mb-6">
               <label className="block text-sm font-medium text-foreground mb-3">Preferred Destination</label>
               <select
@@ -201,7 +215,7 @@ export default function ContactForm() {
                 <option value="Himachal Pradesh">Himachal Pradesh</option>
                 <option value="Uttarakhand">Uttarakhand</option>
                 <option value="Rajasthan">Rajasthan</option>
-                <option value="Gujarat">Gujarat</option>
+                <option value="Goa">Goa</option>
                 <option value="Multiple">Multiple Destinations</option>
                 <option value="Not Sure">Not Sure Yet</option>
               </select>

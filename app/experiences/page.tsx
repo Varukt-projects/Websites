@@ -3,7 +3,7 @@ import Footer from "@/components/footer"
 import { Card } from "@/components/ui/card"
 import Link from "next/link"
 import { blogPosts } from "@/lib/blog"
-import { Calendar, User, Clock } from "lucide-react"
+import { Calendar, Clock } from "lucide-react"
 
 export default function ExperiencesPage() {
   const categories = Array.from(new Set(blogPosts.map((post) => post.category)))
@@ -40,10 +40,6 @@ export default function ExperiencesPage() {
                   <h2 className="text-3xl font-serif font-bold text-foreground mb-4">{blogPosts[0].title}</h2>
                   <p className="text-muted-foreground mb-6">{blogPosts[0].excerpt}</p>
                   <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
-                    <div className="flex items-center gap-2">
-                      <User size={16} />
-                      {blogPosts[0].author}
-                    </div>
                     <div className="flex items-center gap-2">
                       <Calendar size={16} />
                       {new Date(blogPosts[0].date).toLocaleDateString()}

@@ -24,11 +24,11 @@ const destinations = [
     highlights: ["Jaipur", "Udaipur", "Jodhpur"],
   },
   {
-    id: "gujarat",
-    name: "Gujarat",
-    description: "Rich heritage, wildlife sanctuaries, and coastal beauty",
-    image: "/gujarat-wildlife-lion-landscape.jpg",
-    highlights: ["Gir Forest", "Kutch", "Ahmedabad"],
+    id: "goa",
+    name: "Goa",
+    description: "Tropical beaches, Portuguese heritage, and vibrant nightlife",
+    image: "/goa-beach-coconut-trees-landscape.jpg",
+    highlights: ["Anjuna Beach", "Palolem Beach", "Water Sports"],
   },
 ]
 

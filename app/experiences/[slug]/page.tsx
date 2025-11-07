@@ -4,7 +4,7 @@ import Header from "@/components/header"
 import Footer from "@/components/footer"
 import { blogPosts } from "@/lib/blog"
 import { Card } from "@/components/ui/card"
-import { Calendar, User, Clock, ArrowLeft } from "lucide-react"
+import { Calendar, Clock, ArrowLeft } from "lucide-react"
 
 export async function generateStaticParams() {
   return blogPosts.map((post) => ({
@@ -19,7 +19,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
     notFound()
   }
 
-  const relatedPosts = blogPosts.filter((p) => p.category === post.category && p.id !== post.id).slice(0, 3)
+  const communityPost = blogPosts.find((p) => p.category === post.category && p.id !== post.id)
 
   return (
     <main className="min-h-screen bg-background">
@@ -43,10 +43,6 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
       {/* Meta Info */}
       <section className="py-8 px-4 sm:px-6 lg:px-8 bg-secondary border-b border-border">
         <div className="max-w-3xl mx-auto flex flex-wrap gap-6 text-sm text-muted-foreground">
-          <div className="flex items-center gap-2">
-            <User size={18} />
-            <span>{post.author}</span>
-          </div>
           <div className="flex items-center gap-2">
             <Calendar size={18} />
             <span>
@@ -85,36 +81,34 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
         </div>
       </section>
 
-      {/* Related Posts */}
-      {relatedPosts.length > 0 && (
+      {/* Community Posts Grid */}
+      {communityPost && (
         <section className="py-16 px-4 sm:px-6 lg:px-8 bg-background">
           <div className="max-w-7xl mx-auto">
-            <h2 className="text-3xl font-serif font-bold text-foreground mb-12">Related Stories</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {relatedPosts.map((relatedPost) => (
-                <Link key={relatedPost.id} href={`/experiences/${relatedPost.slug}`}>
-                  <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer h-full flex flex-col">
-                    <div className="relative h-48 overflow-hidden">
-                      <img
-                        src={relatedPost.image || "/placeholder.svg"}
-                        alt={relatedPost.title}
-                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                      />
+            <h2 className="text-3xl font-serif font-bold text-foreground mb-12">From Our Community</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <Link key={communityPost.id} href={`/experiences/${communityPost.slug}`}>
+                <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer h-full flex flex-col">
+                  <div className="relative h-48 overflow-hidden">
+                    <img
+                      src={communityPost.image || "/placeholder.svg"}
+                      alt={communityPost.title}
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                  <div className="p-6 flex flex-col flex-grow">
+                    <span className="text-accent text-xs font-semibold mb-2">{communityPost.category}</span>
+                    <h3 className="text-lg font-serif font-bold text-foreground mb-3 line-clamp-2">
+                      {communityPost.title}
+                    </h3>
+                    <p className="text-sm text-muted-foreground flex-grow line-clamp-2">{communityPost.excerpt}</p>
+                    <div className="flex items-center justify-between text-xs text-muted-foreground border-t border-border pt-4 mt-4">
+                      <span>{new Date(communityPost.date).toLocaleDateString()}</span>
+                      <span>{communityPost.readTime}</span>
                     </div>
-                    <div className="p-6 flex flex-col flex-grow">
-                      <span className="text-accent text-xs font-semibold mb-2">{relatedPost.category}</span>
-                      <h3 className="text-lg font-serif font-bold text-foreground mb-3 line-clamp-2">
-                        {relatedPost.title}
-                      </h3>
-                      <p className="text-sm text-muted-foreground flex-grow line-clamp-2">{relatedPost.excerpt}</p>
-                      <div className="flex items-center justify-between text-xs text-muted-foreground border-t border-border pt-4 mt-4">
-                        <span>{new Date(relatedPost.date).toLocaleDateString()}</span>
-                        <span>{relatedPost.readTime}</span>
-                      </div>
-                    </div>
-                  </Card>
-                </Link>
-              ))}
+                  </div>
+                </Card>
+              </Link>
             </div>
           </div>
         </section>
