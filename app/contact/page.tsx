@@ -51,7 +51,7 @@ export default function ContactPage() {
                 <MapPinIcon className="text-accent mt-1 flex-shrink-0" size={24} />
                 <div>
                   <h3 className="font-semibold text-foreground mb-1">Office</h3>
-                  <p className="text-sm text-muted-foreground">New Delhi, India</p>
+                  <p className="text-sm text-muted-foreground">Ahmedabad, India</p>
                   <p className="text-xs text-muted-foreground mt-2">Available for consultations</p>
                 </div>
               </div>
